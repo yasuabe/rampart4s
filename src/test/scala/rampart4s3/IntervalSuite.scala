@@ -20,9 +20,10 @@ class IntervalSuite extends ScalaCheckSuite {
   }
   property("interval is empty iif lesser equals to greater") {
     given Arbitrary[Int] = Arbitrary(genSmallInt)
-    forAll { (l: Int, g: Int) =>
-      val i = Interval(l, g)
-      Interval(l, g).isEmpty == (l == g)
-    }
+    forAll { (l: Int, g: Int) => Interval(l, g).isEmpty == (l == g) }
+  }
+  property("interval is nonEmpty iif lesser doesn't equal to greater") {
+    given Arbitrary[Int] = Arbitrary(genSmallInt)
+    forAll { (l: Int, g: Int) => Interval(l, g).nonEmpty == (l != g) }
   }
 }
