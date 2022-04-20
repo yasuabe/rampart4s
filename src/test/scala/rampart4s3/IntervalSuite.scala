@@ -18,4 +18,11 @@ class IntervalSuite extends ScalaCheckSuite {
   property("lesser is always less than or equals to greater") {
     forAll { (interval: Interval[Int]) => interval.lesser <= interval.greater }
   }
+  property("interval is empty iif lesser equals to greater") {
+    given Arbitrary[Int] = Arbitrary(genSmallInt)
+    forAll { (l: Int, g: Int) =>
+      val i = Interval(l, g)
+      Interval(l, g).isEmpty == (l == g)
+    }
+  }
 }

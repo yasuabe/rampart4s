@@ -12,3 +12,4 @@ object Rampart:
   extension [A: Order](i: Interval[A])
     def lesser: A = i._1
     def greater: A = i._2
+    def isEmpty: Boolean = i._1 == i._2
