@@ -10,6 +10,9 @@ lazy val root = project
 
     libraryDependencies ++= List(
       "org.typelevel" %% "cats-core" % "2.6.1",
-      "org.scalameta" %% "munit" % "0.7.29" % Test
-      )
+      "org.scalameta" %% "munit" % "0.7.29" % Test,
+      "org.scalacheck" %% "scalacheck" % "1.16.0" % Test,
+      "org.scalameta" %% "munit-scalacheck" % "0.7.29" % Test,
+      "io.chrisdavenport" %% "cats-scalacheck" % "0.3.1" % Test
+    )
   )
