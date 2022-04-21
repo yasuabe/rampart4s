@@ -43,6 +43,30 @@ class IntervalSuite extends ScalaCheckSuite {
       cond == ((x relate y) == Relation.Meets)
     }
   }
+  property("x.nonEmpty ∧ y.nonEmpty ∧ x.greater = y.lesser → MetBy") {
+    assert((Interval(2, 3) relate Interval(1, 2)) == Relation.MetBy)
+
+    forAll { (x: Interval[Int], y: Interval[Int]) =>
+      val cond = x.nonEmpty && y.nonEmpty && x.lesser == y.greater
+      cond == ((x relate y) == Relation.MetBy)
+    }
+  }
+  property("x.nonEmpty ∧ y.nonEmpty ∧ x.lesser = y.lesser ∧ x.greater < y.greater → Starts") {
+    assert((Interval(3, 4) relate Interval(3, 7)) == Relation.Starts)
+
+    forAll { (x: Interval[Int], y: Interval[Int]) =>
+      val cond = x.nonEmpty && y.nonEmpty && x.lesser == y.lesser && x.greater < y.greater
+      cond == ((x relate y) == Relation.Starts)
+    }
+  }
+  property("x.nonEmpty ∧ y.nonEmpty ∧ x.lesser = y.lesser ∧ x.greater > y.greater → StartedBy") {
+    assert((Interval(3, 8) relate Interval(3, 7)) == Relation.StartedBy)
+
+    forAll { (x: Interval[Int], y: Interval[Int]) =>
+      val cond = x.nonEmpty && y.nonEmpty && x.lesser == y.lesser && x.greater > y.greater
+      cond == ((x relate y) == Relation.StartedBy)
+    }
+  }
   property("x.greater < y.lesser → Before") {
     assert((Interval(0, 1) relate Interval(2, 2)) == Relation.Before)
     assert((Interval(1, 1) relate Interval(2, 2)) == Relation.Before)
@@ -63,14 +87,6 @@ class IntervalSuite extends ScalaCheckSuite {
     forAll { (x: Interval[Int], y: Interval[Int]) =>
       val cond = x.lesser > y.greater
       cond == ((x relate y) == Relation.After)
-    }
-  }
-  property("x.nonEmpty ∧ y.nonEmpty ∧ x.greater = y.lesser → MetBy") {
-    assert((Interval(2, 3) relate Interval(1, 2)) == Relation.MetBy)
-
-    forAll { (x: Interval[Int], y: Interval[Int]) =>
-      val cond = x.nonEmpty && y.nonEmpty && x.lesser == y.greater
-      cond == ((x relate y) == Relation.MetBy)
     }
   }
   property("x.nonEmpty ∧ x.lesser > y.lesser ∧ x.greater = y.greater → Finishes") {

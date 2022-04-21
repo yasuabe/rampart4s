@@ -27,6 +27,8 @@ object Rampart:
       case (_ , GT, _ , _ ) => After
       case (LT, _ , EQ, LT) => Meets 
       case (GT, EQ, _ , GT) => MetBy 
+      case (EQ, _ , GT, LT) => Starts
+      case (EQ, LT, _ , GT) => StartedBy
       case (LT, _ , _ , GT) => Contains
       case (GT, _ , _ , LT) => During
       case (LT, _ , EQ, EQ) => Dummy
