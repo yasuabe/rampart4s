@@ -145,4 +145,9 @@ class IntervalSuite extends ScalaCheckSuite {
       cond == ((x relate y) == Relation.OverlappedBy)
     }
   }
+  property("(x relate y).invert = y relate x") {
+    forAll { (x: Interval[Int], y: Interval[Int]) =>
+      (x relate y).invert == (y relate x)
+    }
+  }
 }
