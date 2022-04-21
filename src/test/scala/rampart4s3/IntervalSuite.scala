@@ -89,4 +89,20 @@ class IntervalSuite extends ScalaCheckSuite {
       cond == ((x relate y) == Relation.FinishedBy)
     }
   }
+  property("x.lesser < y.lesser ∧ x.greater > y.greater → Contains") {
+    assert((Interval(2, 8) relate Interval(3, 7)) == Relation.Contains)
+
+    forAll { (x: Interval[Int], y: Interval[Int]) =>
+      val cond = x.lesser < y.lesser && x.greater > y.greater
+      cond == ((x relate y) == Relation.Contains)
+    }
+  }
+  property("x.lesser > y.lesser ∧ x.greater < y.greater → During") {
+    assert((Interval(3, 7) relate Interval(2, 8)) == Relation.During)
+
+    forAll { (x: Interval[Int], y: Interval[Int]) =>
+      val cond = x.lesser > y.lesser && x.greater < y.greater
+      cond == ((x relate y) == Relation.During)
+    }
+  }
 }
