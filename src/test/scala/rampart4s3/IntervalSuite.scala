@@ -121,4 +121,28 @@ class IntervalSuite extends ScalaCheckSuite {
       cond == ((x relate y) == Relation.During)
     }
   }
+  property("other x < y patterns  → Overlaps") {
+    assert((Interval(2, 4) relate Interval(3, 7)) == Relation.Overlaps)
+    assert((Interval(3, 3) relate Interval(3, 7)) == Relation.Overlaps)
+    assert((Interval(3, 7) relate Interval(7, 7)) == Relation.Overlaps)
+
+    forAll { (x: Interval[Int], y: Interval[Int]) =>
+      val cond = x.lesser < y.lesser && x.greater > y.lesser && x.greater < y.greater
+               || x.isEmpty && y.nonEmpty && x.lesser == y.lesser && x.greater == y.lesser
+               || x.nonEmpty && y.isEmpty && x.greater == y.lesser && x.greater == y.greater
+      cond == ((x relate y) == Relation.Overlaps)
+    }
+  }
+  property("other x > y patterns  → OverlappedBy") {
+    assert((Interval(3, 7) relate Interval(3, 3)) == Relation.OverlappedBy)
+    assert((Interval(3, 7) relate Interval(3, 3)) == Relation.OverlappedBy)
+    assert((Interval(7, 7) relate Interval(3, 7)) == Relation.OverlappedBy)
+
+    forAll { (x: Interval[Int], y: Interval[Int]) =>
+      val cond = x.lesser > y.lesser && x.lesser < y.greater && x.greater > y.greater
+               || x.isEmpty && y.nonEmpty && x.lesser == y.greater && x.greater == y.greater
+               || x.nonEmpty && y.isEmpty && x.lesser == y.lesser && x.greater > y.greater
+      cond == ((x relate y) == Relation.OverlappedBy)
+    }
+  }
 }

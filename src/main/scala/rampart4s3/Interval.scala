@@ -31,8 +31,9 @@ object Rampart:
       case (EQ, LT, _ , GT) => StartedBy
       case (LT, _ , _ , GT) => Contains
       case (GT, _ , _ , LT) => During
-      case (LT, _ , EQ, EQ) => Dummy
+      case (LT,  _, _ , LT) => Overlaps
+      case (GT, _ , _ , GT) => OverlappedBy
+      case (_ ,  _, EQ, _ ) => Overlaps
+      case (_ , EQ, _ , _ ) => OverlappedBy
       case (LT, _ , _ , EQ) => FinishedBy
-      case (GT, EQ, _ , EQ) => Dummy
       case (GT, _ , _ , EQ) => Finishes
-      case (_ ,  _, _ ,  _) => Dummy
