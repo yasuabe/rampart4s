@@ -35,12 +35,11 @@ class IntervalSuite extends ScalaCheckSuite {
       cond == ((x relate y) == Relation.Equal)
     }
   }
-  property("x.nonEmpty ∧ x.greater = y.lesser → Meets") {
-    assert((Interval(1, 2) relate Interval(2, 2)) == Relation.Meets)
+  property("x.nonEmpty ∧ y.nonEmpty ∧ x.greater = y.lesser→ Meets") {
     assert((Interval(1, 2) relate Interval(2, 3)) == Relation.Meets)
 
     forAll { (x: Interval[Int], y: Interval[Int]) =>
-      val cond = x.nonEmpty && x.greater == y.lesser
+      val cond = x.nonEmpty && y.nonEmpty && x.greater == y.lesser
       cond == ((x relate y) == Relation.Meets)
     }
   }
@@ -64,6 +63,14 @@ class IntervalSuite extends ScalaCheckSuite {
     forAll { (x: Interval[Int], y: Interval[Int]) =>
       val cond = x.lesser > y.greater
       cond == ((x relate y) == Relation.After)
+    }
+  }
+  property("x.nonEmpty ∧ y.nonEmpty ∧ x.greater = y.lesser → MetBy") {
+    assert((Interval(2, 3) relate Interval(1, 2)) == Relation.MetBy)
+
+    forAll { (x: Interval[Int], y: Interval[Int]) =>
+      val cond = x.nonEmpty && y.nonEmpty && x.lesser == y.greater
+      cond == ((x relate y) == Relation.MetBy)
     }
   }
 }

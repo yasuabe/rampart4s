@@ -25,5 +25,6 @@ object Rampart:
       case (EQ, _ , _ , EQ) => Equal
       case (_ , _ , LT, _ ) => Before
       case (_ , GT, _ , _ ) => After
-      case (LT, _ , EQ, _ ) => Meets 
+      case (LT, _ , EQ, LT) => Meets 
+      case (GT, EQ, _ , GT) => MetBy 
       case (_ ,  _, _ ,  _) => Dummy
