@@ -22,5 +22,6 @@ object Rampart:
         c(i.lesser,  y.greater),
         c(i.greater, y.lesser),
         c(i.greater, y.greater)) match
-      case (EQ, _, _, EQ) => Equal
+      case (EQ, _, _ , EQ) => Equal
+      case (LT, _, EQ, _ ) => Meets 
       case (_,  _, _,  _) => OverlappedBy
