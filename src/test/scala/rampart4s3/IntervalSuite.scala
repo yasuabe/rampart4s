@@ -134,7 +134,7 @@ class IntervalSuite extends ScalaCheckSuite {
     }
   }
   property("other x > y patterns  → OverlappedBy") {
-    assert((Interval(3, 7) relate Interval(3, 3)) == Relation.OverlappedBy)
+    assert((Interval(3, 7) relate Interval(2, 4)) == Relation.OverlappedBy)
     assert((Interval(3, 7) relate Interval(3, 3)) == Relation.OverlappedBy)
     assert((Interval(7, 7) relate Interval(3, 7)) == Relation.OverlappedBy)
 
