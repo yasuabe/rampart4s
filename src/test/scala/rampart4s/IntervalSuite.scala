@@ -148,11 +148,13 @@ class IntervalSuite extends ScalaCheckSuite {
     }
   }
   property("(a relate b) == ((a, a) relate (b, b))") {
+    given Interval[Int, Int] = pointInstance[Int]
     forAll { (a: Int, b: Int) =>
       (a relate b) == ((a, a) relate (b, b))
     }
   }
   property("(a relate b) in {BEFORE, EQUAL, AFTER}") {
+    given Interval[Int, Int] = pointInstance[Int]
     val rs = Set(Relation.Before, Relation.Equal, Relation.After)
 
     forAll { (a: Int, b: Int) => rs.contains(a relate b) }

@@ -4,7 +4,7 @@ import cats.Order
 import cats.Comparison
 import Relation.*
 
-trait Interval[P, A](using o: Order[A]):
+trait Interval[-P, A](using o: Order[A]):
 
   def lesser(p: P): A
   def greater(p: P): A
@@ -67,6 +67,6 @@ object Interval:
     def lesser(a: Range): Int = a.min
     def greater(a: Range): Int = a.max
 
-  given [A: Order]: Interval[A, A] with
+  def pointInstance [A: Order]: Interval[A, A] = new Interval[A, A]:
     def lesser(a: A): A = a
     def greater(a: A): A = a
