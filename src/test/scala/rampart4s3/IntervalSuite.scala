@@ -170,4 +170,34 @@ class IntervalSuite extends ScalaCheckSuite {
       (a relate b).invert == (b relate a)
     }
   }
+  property("has predicate per relation") {
+    assert((1, 2) isBefore       (3, 7))
+    assert((2, 3) meets          (3, 7))
+    assert((2, 4) overlaps       (3, 7))
+    assert((2, 7) isFinishedBy   (3, 7))
+    assert((2, 8) contains       (3, 7))
+    assert((3, 4) starts         (3, 7))
+    assert((3, 7) equals         (3, 7))
+    assert((3, 8) isStartedBy    (3, 7))
+    assert((4, 6) isDuring       (3, 7))
+    assert((6, 7) finishes       (3, 7))
+    assert((6, 8) isOverlappedBy (3, 7))
+    assert((7, 8) isMetBy        (3, 7))
+    assert((8, 9) isAfter        (3, 7))
+
+    assert((3, 3) overlaps       (3, 7))
+    assert((7, 7) isOverlappedBy (3, 7))
+    assert((3, 7) isOverlappedBy (3, 3))
+    assert((3, 7) overlaps       (7, 7))
+
+    forAll { (x: (Int, Int), y: (Int, Int)) =>
+      (x isBefore       y) == (y isAfter        x)
+      (x meets          y) == (y isMetBy        x)
+      (x overlaps       y) == (y isOverlappedBy x)
+      (x isFinishedBy   y) == (y finishes       x)
+      (x contains       y) == (y isDuring       x)
+      (x starts         y) == (y isStartedBy    x)
+      (x equals         y) == (y equals         x)
+    }
+  }
 }

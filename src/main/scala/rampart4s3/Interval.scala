@@ -2,8 +2,10 @@ package rampart4s3
 
 import cats.Order
 import cats.Comparison
+import Relation.*
 
 trait Interval[P, A](using o: Order[A]):
+
   def lesser(p: P): A
   def greater(p: P): A
   def isEmpty(p: P): Boolean = o.compare(lesser(p), greater(p)) == 0
@@ -11,7 +13,6 @@ trait Interval[P, A](using o: Order[A]):
 
   def relate(x: P, y: P): Relation =
     import Comparison.{EqualTo as EQ, LessThan as LT, GreaterThan as GT}
-    import Relation.*
     def compare(a: A, b: A) = o.comparison(a, b)
 
     ( compare(lesser(x),  lesser(y) ),
@@ -42,6 +43,20 @@ object Interval:
     def greater:  A       = pi greater p
 
     def relate(q: C): Relation  = pi.relate(p, q)
+
+    def isBefore(q: C): Boolean = relate(q) == Before
+    def meets(q: C): Boolean = relate(q) == Meets
+    def overlaps(q: C): Boolean = relate(q) == Overlaps
+    def isFinishedBy(q: C): Boolean = relate(q) == FinishedBy
+    def contains(q: C): Boolean = relate(q) == Contains
+    def starts(q: C): Boolean = relate(q) == Starts
+    def equals(q: C): Boolean = relate(q) == Equal
+    def isStartedBy(q: C): Boolean = relate(q) == StartedBy
+    def isDuring(q: C): Boolean = relate(q) == During
+    def finishes(q: C): Boolean = relate(q) == Finishes
+    def isOverlappedBy(q: C): Boolean = relate(q) == OverlappedBy
+    def isMetBy(q: C): Boolean = relate(q) == MetBy
+    def isAfter(q: C): Boolean = relate(q) == After
 
   type Pair[A] = (A, A)
   def createPairInstance[A](using o: Order[A]): Interval[Pair[A], A] = new Interval[Pair[A], A]:
