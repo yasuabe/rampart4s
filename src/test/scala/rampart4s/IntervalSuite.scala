@@ -6,6 +6,7 @@ import org.scalacheck.{ Arbitrary, Gen }
 import org.scalacheck.cats.implicits._
 import cats.Apply
 import Interval.*
+import Interval.given Interval[Pair[Int], Int]
 
 class IntervalSuite extends ScalaCheckSuite {
 
@@ -14,17 +15,14 @@ class IntervalSuite extends ScalaCheckSuite {
 
   given Arbitrary[(Int, Int)] = Arbitrary(genIntInterval)
 
-  given pi: Interval[(Int, Int), Int] = createPairInstance[Int]
-
   property("lesser is always less than or equals to greater") {
+    val pi = summon[Interval[Pair[Int], Int]]
     forAll { (i: (Int, Int)) => pi.lesser(i) <= pi.greater(i) }
   }
   property("interval is empty iif lesser equals to greater") {
-    given Arbitrary[Int] = Arbitrary(genSmallInt)
     forAll { (l: Int, g: Int) => (l, g).isEmpty == (l == g) }
   }
   property("interval is nonEmpty iif lesser doesn't equal to greater") {
-    given Arbitrary[Int] = Arbitrary(genSmallInt)
     forAll { (l: Int, g: Int) => (l, g).nonEmpty == (l != g) }
   }
   property("x.lesser = y.lesser ∧ x.greater = y.greater → Equal") {
@@ -150,21 +148,18 @@ class IntervalSuite extends ScalaCheckSuite {
     }
   }
   property("(a relate b) == ((a, a) relate (b, b))") {
-    given Interval[Int, Int] = createSingleValInterval[Int]
-
     forAll { (a: Int, b: Int) =>
       (a relate b) == ((a, a) relate (b, b))
     }
   }
   property("(a relate b) in {BEFORE, EQUAL, AFTER}") {
-    given Interval[Int, Int] = createSingleValInterval[Int]
     val rs = Set(Relation.Before, Relation.Equal, Relation.After)
 
     forAll { (a: Int, b: Int) => rs.contains(a relate b) }
   }
   property("works for non-empty Range") {
     given Arbitrary[Range] = Arbitrary(
-      genIntInterval.map[Range](Range.apply(_, _)).suchThat(_.nonEmpty)
+      genIntInterval.map[Range](Range.apply(_, _)).retryUntil(_.nonEmpty)
     )
     forAll { (a: Range, b: Range) =>
       (a relate b).invert == (b relate a)

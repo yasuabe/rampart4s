@@ -59,14 +59,14 @@ object Interval:
     def isAfter(q: C):        Boolean = relate(q) == After
 
   type Pair[A] = (A, A)
-  def createPairInstance[A](using o: Order[A]): Interval[Pair[A], A] = new Interval[Pair[A], A]:
+  given [A](using o: Order[A]): Interval[Pair[A], A] with
     def lesser(p: Pair[A]): A = o.min(p._1, p._2)
     def greater(p: Pair[A]): A = o.max(p._1, p._2)
   
-  def createSingleValInterval[A: Order] = new Interval[A, A]:
-    def lesser(a: A): A = a
-    def greater(a: A): A = a
-
-  given Interval[Range, Int] = new Interval[Range, Int]:
+  given Interval[Range, Int] with 
     def lesser(a: Range): Int = a.min
     def greater(a: Range): Int = a.max
+
+  given [A: Order]: Interval[A, A] with
+    def lesser(a: A): A = a
+    def greater(a: A): A = a
