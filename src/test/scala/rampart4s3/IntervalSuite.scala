@@ -162,4 +162,12 @@ class IntervalSuite extends ScalaCheckSuite {
 
     forAll { (a: Int, b: Int) => rs.contains(a relate b) }
   }
+  property("works for non-empty Range") {
+    given Arbitrary[Range] = Arbitrary(
+      genIntInterval.map[Range](Range.apply(_, _)).suchThat(_.nonEmpty)
+    )
+    forAll { (a: Range, b: Range) =>
+      (a relate b).invert == (b relate a)
+    }
+  }
 }

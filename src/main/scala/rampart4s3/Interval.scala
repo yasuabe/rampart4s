@@ -51,3 +51,7 @@ object Interval:
   def createSingleValInterval[A: Order] = new Interval[A, A]:
     def lesser(a: A): A = a
     def greater(a: A): A = a
+
+  given Interval[Range, Int] = new Interval[Range, Int]:
+    def lesser(a: Range): Int = a.min
+    def greater(a: Range): Int = a.max
