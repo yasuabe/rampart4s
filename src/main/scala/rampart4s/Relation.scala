@@ -1,4 +1,4 @@
-package rampart4s3
+package rampart4s
 
 enum Relation:
   case

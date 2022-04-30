@@ -1,4 +1,4 @@
-package rampart4s3
+package rampart4s
 
 import cats.Order
 import cats.Comparison
@@ -44,19 +44,19 @@ object Interval:
 
     def relate(q: C): Relation  = pi.relate(p, q)
 
-    def isBefore(q: C): Boolean = relate(q) == Before
-    def meets(q: C): Boolean = relate(q) == Meets
-    def overlaps(q: C): Boolean = relate(q) == Overlaps
-    def isFinishedBy(q: C): Boolean = relate(q) == FinishedBy
-    def contains(q: C): Boolean = relate(q) == Contains
-    def starts(q: C): Boolean = relate(q) == Starts
-    def equals(q: C): Boolean = relate(q) == Equal
-    def isStartedBy(q: C): Boolean = relate(q) == StartedBy
-    def isDuring(q: C): Boolean = relate(q) == During
-    def finishes(q: C): Boolean = relate(q) == Finishes
+    def isBefore(q: C):       Boolean = relate(q) == Before
+    def meets(q: C):          Boolean = relate(q) == Meets
+    def overlaps(q: C):       Boolean = relate(q) == Overlaps
+    def isFinishedBy(q: C):   Boolean = relate(q) == FinishedBy
+    def contains(q: C):       Boolean = relate(q) == Contains
+    def starts(q: C):         Boolean = relate(q) == Starts
+    def equalsTo(q: C):       Boolean = relate(q) == Equal
+    def isStartedBy(q: C):    Boolean = relate(q) == StartedBy
+    def isDuring(q: C):       Boolean = relate(q) == During
+    def finishes(q: C):       Boolean = relate(q) == Finishes
     def isOverlappedBy(q: C): Boolean = relate(q) == OverlappedBy
-    def isMetBy(q: C): Boolean = relate(q) == MetBy
-    def isAfter(q: C): Boolean = relate(q) == After
+    def isMetBy(q: C):        Boolean = relate(q) == MetBy
+    def isAfter(q: C):        Boolean = relate(q) == After
 
   type Pair[A] = (A, A)
   def createPairInstance[A](using o: Order[A]): Interval[Pair[A], A] = new Interval[Pair[A], A]:

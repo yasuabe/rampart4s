@@ -1,4 +1,4 @@
-package rampart4s3
+package rampart4s
 
 import munit.ScalaCheckSuite
 import org.scalacheck.Prop._
@@ -177,7 +177,7 @@ class IntervalSuite extends ScalaCheckSuite {
     assert((2, 7) isFinishedBy   (3, 7))
     assert((2, 8) contains       (3, 7))
     assert((3, 4) starts         (3, 7))
-    assert((3, 7) equals         (3, 7))
+    assert((3, 7) equalsTo       (3, 7))
     assert((3, 8) isStartedBy    (3, 7))
     assert((4, 6) isDuring       (3, 7))
     assert((6, 7) finishes       (3, 7))
@@ -197,7 +197,7 @@ class IntervalSuite extends ScalaCheckSuite {
       (x isFinishedBy   y) == (y finishes       x)
       (x contains       y) == (y isDuring       x)
       (x starts         y) == (y isStartedBy    x)
-      (x equals         y) == (y equals         x)
+      (x equalsTo       y) == (y equalsTo       x)
     }
   }
 }
