@@ -47,3 +47,7 @@ object Interval:
   def createPairInstance[A](using o: Order[A]): Interval[Pair[A], A] = new Interval[Pair[A], A]:
     def lesser(p: Pair[A]): A = o.min(p._1, p._2)
     def greater(p: Pair[A]): A = o.max(p._1, p._2)
+  
+  def createSingleValInterval[A: Order] = new Interval[A, A]:
+    def lesser(a: A): A = a
+    def greater(a: A): A = a
